@@ -56,6 +56,8 @@ pub const Chip8 = struct {
     var random: std.Random = undefined;
     var last_timer_update: u64 = 0;
 
+    pub var quit = false;
+
     pub fn loadROM(file: std.fs.File) !void {
         const file_size = try file.getEndPos();
 
@@ -104,6 +106,11 @@ pub const Chip8 = struct {
         switch (event.type) {
             c.SDL_KEYUP => {
                 const key = event.key.keysym.sym;
+                if (key == c.SDLK_ESCAPE) {
+                    quit = true;
+                    return;
+                }
+
                 if (!key_map.contains(key)) return;
 
                 released ^= @as(u16, 1) << key_map.get(key).?;

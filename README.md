@@ -1,6 +1,10 @@
-# CHIP-8 Emulator in Zig
+# Zhig8 - CHIP-8 Emulator in Zig
 
 A simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in [Zig](https://ziglang.org/) that uses [SDL2](https://www.libsdl.org/) for graphics and input.
+
+<div align="center">
+  <img src="media/demo.gif" alt="Demo">
+</div>
 
 ## Features
 
@@ -42,17 +46,17 @@ A simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in [Zig
    zig build --release=fast -p . --prefix-exe-dir .
    ```
 
-3. After successful compilation, an executable (e.g. `chip8`) is produced in the current directory.
+3. After successful compilation, an executable (e.g. `zhig8`) is produced in the current directory.
 
 ## Usage
 
 ```
-./chip8 <path_to_rom>
+./zhig8 <path_to_rom>
 ```
 
 For example:
 ```sh
-./chip8 roms/pong.ch8
+./zhig8 roms/demo.ch8
 ```
 
 - The emulator reads the specified ROM file into memory and attempts to run it.
@@ -64,7 +68,7 @@ You can tweak various settings in `config.zig`:
 
 - `pub const MULT = 16;`  
   The pixel size multiplier for the 64×32 display. Increasing or decreasing this will scale up or down the display.
-- `pub const CPU_FREQ = 2500.0;`  
+- `pub const CPU_FREQ = 1000.0;`  
   The approximate frequency (in Hz) at which the CHIP-8 instructions are executed.
 - `pub const GRID = false;`  
   If `true`, a grid overlay is drawn (helpful for debugging).

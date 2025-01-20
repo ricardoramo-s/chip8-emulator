@@ -45,7 +45,12 @@ pub fn main() !void {
     }
     defer c.SDL_Quit();
 
-    screen = c.SDL_CreateWindow("Chip-8 Emulator", c.SDL_WINDOWPOS_UNDEFINED, c.SDL_WINDOWPOS_UNDEFINED, chip8.WIDTH * config.MULT, chip8.HEIGHT * config.MULT, c.SDL_WINDOW_OPENGL) orelse
+    var header: [120]u8 = undefined;
+    @memset(header[0..], 0);
+    var writer = std.io.fixedBufferStream(&header);
+    try std.fmt.format(writer.writer(), "Zhig8 - {s}\n", .{file_path[0..@min(file_path.len, 100)]});
+
+    screen = c.SDL_CreateWindow(&header[0], c.SDL_WINDOWPOS_UNDEFINED, c.SDL_WINDOWPOS_UNDEFINED, chip8.WIDTH * config.MULT, chip8.HEIGHT * config.MULT, c.SDL_WINDOW_OPENGL) orelse
         {
         c.SDL_Log("Unable to create window: %s", c.SDL_GetError());
         return error.SDLInitializationFailed;
@@ -61,9 +66,8 @@ pub fn main() !void {
     _ = c.SDL_SetRenderDrawBlendMode(renderer, c.SDL_BLENDMODE_BLEND);
 
     var last_cycle = nanotime();
-    var quit = false;
 
-    while (!quit) {
+    while (!chip8.Chip8.quit) {
         const current_time = nanotime();
         const cycle_interval_ns: u64 = @intFromFloat((1.0 / config.CPU_FREQ) * std.time.ns_per_s);
         if (current_time - last_cycle < cycle_interval_ns) {
@@ -78,7 +82,7 @@ pub fn main() !void {
         while (c.SDL_PollEvent(&event) != 0) {
             switch (event.type) {
                 c.SDL_QUIT => {
-                    quit = true;
+                    chip8.Chip8.quit = true;
                 },
                 c.SDL_KEYUP, c.SDL_KEYDOWN => chip8.Chip8.handleKey(event),
                 else => {},
