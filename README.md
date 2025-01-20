@@ -17,10 +17,11 @@ A simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in [Zig
 
 ```
 .
-├── README.md         # This file
-├── main.zig          # The entry point of the application
-├── config.zig        # Global configuration constants
-└── chip8.zig         # The core Chip8 emulator implementation
+├── README.md      # This file
+└── src
+     ├── main.zig          # The entry point of the application
+     ├── config.zig        # Global configuration constants
+     └── chip8.zig         # The core Chip8 emulator implementation
 ```
 
 - **`main.zig`**:
